@@ -17,7 +17,7 @@ module Mutations
   			return GraphQL::ExecutionError.new('Invalid password') unless user.authenticate(password)
   			#token
         puts user.inlink
-      	token = JWT.encode(user.inlink, Rails.application.secrets.secret_key_base)
+      	token = JWT.encode(user.inlink, "secret")
 
       	context[:session][:token] = token
       	#user
