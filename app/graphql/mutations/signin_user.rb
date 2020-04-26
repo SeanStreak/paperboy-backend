@@ -15,10 +15,9 @@ module Mutations
   			user = User.find_by(inlink: inlink.to_s)
   			#authenticate the user
   			return GraphQL::ExecutionError.new('Invalid password') unless user.authenticate(password)
-  			#crypt
-  			crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials.secret_key_base.byteslice(0..31))
-      	#token
-      	token = crypt.encrypt_and_sign("user-id:#{ user.id }")
+  			#token
+        puts user.inlink
+      	token = JWT.encode(user.inlink, Rails.application.secrets.secret_key_base)
 
       	context[:session][:token] = token
       	#user
